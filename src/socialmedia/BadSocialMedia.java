@@ -1,6 +1,7 @@
 package socialmedia;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * BadSocialMedia is a minimally compiling, but non-functioning implementor of
@@ -11,16 +12,54 @@ import java.io.IOException;
  */
 public class BadSocialMedia implements SocialMediaPlatform {
 
+	private ArrayList<Account> accounts = new ArrayList<>();
+
 	@Override
 	public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
-		// TODO Auto-generated method stub
-		return 0;
+		if(checkHandle(handle)==1)
+			throw new IllegalHandleException("handle already in use");
+		else if(checkHandle(handle)==2)
+			throw new InvalidHandleException("handle invalid");
+		//check if handle is valid
+
+		if(accounts.isEmpty()) {
+			accounts.add(new Account(0, handle, null));
+		}
+		else {
+			accounts.add(new Account(accounts.size(), handle, null));
+		}
+		//assign account ID
+
+		return accounts.get(accounts.size()-1).getId();
+		//return Account ID
+	}
+
+	public int checkHandle(String handle){
+		if(handle.contains(" ") && !handle.equals("") && handle.length()<31){
+			for(Account account: accounts){
+				if(account.getHandle().equals(handle)){
+					return 1;
+					//if handle occurs in any existing accounts, return 1
+				}
+			}
+			return 0;
+			//if handle is valid and doesnt exist, return 0
+		}
+		else
+			return 2;
+		//if handle invalid, return 2
 	}
 
 	@Override
 	public int createAccount(String handle, String description) throws IllegalHandleException, InvalidHandleException {
-		// TODO Auto-generated method stub
-		return 0;
+		if(accounts.isEmpty()) {
+			accounts.add(new Account(0, handle, description));
+		}
+		else {
+			accounts.add(new Account(accounts.size(), handle, description));
+		}
+
+		return accounts.get(accounts.size()-1).getId();
 	}
 
 	@Override

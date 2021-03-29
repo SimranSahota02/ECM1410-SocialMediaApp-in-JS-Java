@@ -1,3 +1,5 @@
-            |  Mauger  |   Simba   |
-            |  number  |   number  |
-29/03/2021: |oop design| oop design|
+                                    |  Mauger  |   Simba   |
+|  Date   | Time |Duration |        |  number  |   number  |
+29/03/2021|18:30 |  1hr30  |        |oop design| oop design|
+29/03/2021|20:00 |   1hr   |        | Observer |   Driver  |
+29/03/2021|21:00 |   1hr   |        |  Driver  |  Observer |

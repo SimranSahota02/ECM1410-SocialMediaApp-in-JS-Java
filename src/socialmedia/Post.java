@@ -1,11 +1,11 @@
 package socialmedia;
 
-public class Postmalone implements Posts{
+public class Post implements Posts{
     
     private int likes;
     private String text;
 
-    public Postmalone(){}
+    public Post(){}
 
     public void addLike(){}
 
