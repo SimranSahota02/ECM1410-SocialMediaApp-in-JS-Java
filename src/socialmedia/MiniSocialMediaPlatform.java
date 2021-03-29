@@ -3,6 +3,8 @@ package socialmedia;
 import java.io.IOException;
 import java.io.Serializable;
 
+//mauger testing if git works
+
 /**
  * MiniSocialMediaPlatform interface. The no-argument constructor of a class
  * implementing this interface should initialise the MiniSocialMediaPlatform as
