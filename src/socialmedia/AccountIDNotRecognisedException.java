@@ -10,7 +10,7 @@ package socialmedia;
 public class AccountIDNotRecognisedException extends Exception {
 
 	/**
-	 * Constructs an instance of the exception with no message
+	 * Constructs an instance of the exception with no message no
 	 */
 	public AccountIDNotRecognisedException() {
 		// do nothing
