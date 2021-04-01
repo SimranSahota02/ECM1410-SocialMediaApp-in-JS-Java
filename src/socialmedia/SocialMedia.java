@@ -135,8 +135,35 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public int createPost(String handle, String message) throws HandleNotRecognisedException, InvalidPostException {
-		// TODO Auto-generated method stub
-		return 0;
+		//check handle validity and message validity, then make post, incrementing postid
+		boolean validHandle = false;
+		for(int i=0; i < accounts.size(); i++){
+			if((accounts.get(i).getHandle()) == handle){
+				boolean validPost = checkPost(message);
+				if(validPost){
+					accounts.get(i).getPosts().add(new Post(message,this.PostID));
+					this.PostID +=1;
+					//given valid post and handle make post within users posts and add 1 to post id
+				}
+				else{
+					throw new InvalidPostException("Post is not within valid size constraints.");
+				}
+				validHandle = true;
+				break;
+			}
+		}
+		if(validHandle == false){
+			throw new HandleNotRecognisedException("No existing account with matching Handle.");
+		}
+		return this.PostID;
+	}
+
+	public boolean checkPost(String message){
+		if(message.length()> 100 && message.equals(null)){
+			return false;
+		}
+		//if message within valid size constraints return true
+		return true;
 	}
 
 	@Override
@@ -180,8 +207,12 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public int getTotalOriginalPosts() {
-		// TODO Auto-generated method stub
-		return 0;
+		int totalPosts = 0;
+		for(int i=0; i < accounts.size(); i++){
+			totalPosts += (accounts.get(i).getPosts().size() - 1);
+			//sum the number of posts each account has 
+		}
+		return totalPosts;
 	}
 
 	@Override

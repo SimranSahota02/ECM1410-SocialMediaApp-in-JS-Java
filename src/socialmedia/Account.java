@@ -9,6 +9,8 @@ public class Account {
     private String handle;
     private String description;
     private ArrayList<Post> posts = new ArrayList<>();
+    private ArrayList<Endorsement> endorsements = new ArrayList<>();
+    private ArrayList<Comment> comments = new ArrayList<>();
 
     public Account(int id, String handle, String description){
         this.id = id;
@@ -18,6 +20,10 @@ public class Account {
         } catch (Exception ignored) {
             ;
         }
+    }
+
+    public void setHandle(String handle) {
+        this.handle = handle;
     }
 
     public void setDescription(String description) {
@@ -38,5 +44,13 @@ public class Account {
 
     public ArrayList<Post> getPosts() {
         return posts;
+    }
+
+    public ArrayList<Endorsement> getEndorsements() {
+        return endorsements;
+    }
+
+    public ArrayList<Comment> getComments() {
+        return comments;
     }
 }

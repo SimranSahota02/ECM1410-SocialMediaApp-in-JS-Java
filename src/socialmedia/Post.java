@@ -1,23 +1,37 @@
 package socialmedia;
+import java.util.ArrayList;
 
 public class Post implements Posts{
     
     private int likes;
     private String text;
+    private int postId;
+    private ArrayList<Endorsement> endorsements = new ArrayList<>();
+    private ArrayList<Comment> comments = new ArrayList<>();
 
-    public Post(){}
+    public Post(String text, int postId){
+        this.likes = 0;
+        this.postId = postId;
+        setText(text);
+    }
 
-    public void addLike(){}
+    public void addLike(){
+        this.likes +=1;
+    }
 
-    public void removeLike(){}
+    public void removeLike(){
+        this.likes -=1;
+    }
 
-    public void setText(String text){}
+    public void setText(String text){
+        this.text = text;
+    }
 
     public int getLike(){
-        return 1;
+        return likes;
     }
 
     public String getText(){
-        return "aaaa";
+        return this.text;
     }  
 }
