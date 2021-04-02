@@ -6,12 +6,14 @@ public class Post implements Posts{
     private int likes;
     private String text;
     private int postId;
+    private Account account;
     private ArrayList<Endorsement> endorsements = new ArrayList<>();
     private ArrayList<Comment> comments = new ArrayList<>();
 
-    public Post(String text, int postId){
+    public Post(String text, int postId, Account account){
         this.likes = 0;
         this.postId = postId;
+        this.account = account;
         setText(text);
     }
 
@@ -33,5 +35,13 @@ public class Post implements Posts{
 
     public String getText(){
         return this.text;
-    }  
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public int getPostId(){
+        return postId;
+    }
 }

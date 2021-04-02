@@ -1,21 +1,31 @@
 package socialmedia;
 
-public class Endorsement implements Posts {
+public class Endorsement {
 
-    public void addLike(){}
+    private String text;
+    private int postId;
+    private Post parentPost;
 
-    public void removeLike(){}
+    public Endorsement(int postId, Post parentPost){
+        this.postId = postId;
+        this.parentPost = parentPost;
 
-    public void setText(String text){}
+        setText(("EP@ " + this.parentPost.getAccount().getHandle() + ": " + this.parentPost.getText()).substring(0,100));
+    }
 
-    public int getLike(){
-        return 1;
+    public void setText(String text){
+        this.text = text;
     }
 
     public String getText(){
-        return "aaa";
+        return this.text;
     }
-    
-    public Endorsement(){}
-    //aaaaa
+
+    public int getPostId(){
+        return postId;
+    }
+
+    public Post getParentPost(){
+        return parentPost;
+    }
 }
