@@ -1,7 +1,11 @@
 import socialmedia.AccountIDNotRecognisedException;
+import socialmedia.HandleNotRecognisedException;
 import socialmedia.SocialMedia;
 import socialmedia.IllegalHandleException;
 import socialmedia.InvalidHandleException;
+import socialmedia.InvalidPostException;
+import socialmedia.NotActionablePostException;
+import socialmedia.PostIDNotRecognisedException;
 import socialmedia.SocialMediaPlatform;
 
 /**
@@ -47,6 +51,35 @@ public class SocialMediaPlatformTestApp {
 			assert (false) : "AccountIDNotRecognizedException thrown incorrectly";
 		}
 
+		try {
+			platform.createAccount("the_man");
+			assert (platform.getNumberOfAccounts() == 1) : "number of accounts registered in the system does not match";
+			id = platform.createPost("the_man", "This string is a thing");
+			if(platform.getTotalOriginalPosts() == 1){
+				System.out.println("Post made");
+			}
+			assert(id == 0) : "Post id not 0 as expected.";
+			assert(platform.getTotalOriginalPosts() == 1);
+
+			id = platform.endorsePost("the_man", 0);
+			if(platform.getTotalEndorsmentPosts() == 1){
+				System.out.println("Endorsement made");
+			}
+			assert(id == 1);
+
+		} catch (HandleNotRecognisedException e) {
+			assert (false) : "bad1";
+		} catch (InvalidPostException e) {
+			assert (false) : "bad2";
+		} catch (PostIDNotRecognisedException e) {
+			assert (false) : "bad3";
+		} catch (NotActionablePostException e) {
+			assert (false) : "bad4";
+		} catch (IllegalHandleException e) {
+			assert (false) : "IllegalHandleException thrown incorrectly";
+		} catch (InvalidHandleException e) {
+			assert (false) : "InvalidHandleException thrown incorrectly";
+		}
 	}
 
 }

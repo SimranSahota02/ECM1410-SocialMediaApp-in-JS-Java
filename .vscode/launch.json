@@ -1,0 +1,34 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Launch SocialMediaPlatformTestApp",
+            "request": "launch",
+            "mainClass": "SocialMediaPlatformTestApp",
+            "projectName": "CA3_f42156ec",
+            "vmArgs": "-enableassertions"
+        },
+        {
+            "type": "java",
+            "name": "Launch BookingApp",
+            "request": "launch",
+            "mainClass": "BookingApp"
+        },
+        {
+            "type": "java",
+            "name": "Launch UniversityResources",
+            "request": "launch",
+            "mainClass": "UniversityResources"
+        }
+    ]
+}

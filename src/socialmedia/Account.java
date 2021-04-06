@@ -22,6 +22,15 @@ public class Account {
         }
     }
 
+    public int getNumberEndorsements(){
+        int endorsecount = 0;
+        for(Post post : posts){
+            endorsecount += post.getLike();
+        }
+        //CHECK COMMENTS HERE AND ADD TO ENDORSECOUNT
+        return endorsecount;
+    }
+
     public void setHandle(String handle) {
         this.handle = handle;
     }

@@ -10,7 +10,12 @@ public class Endorsement {
         this.postId = postId;
         this.parentPost = parentPost;
 
-        setText(("EP@ " + this.parentPost.getAccount().getHandle() + ": " + this.parentPost.getText()).substring(0,100));
+        if(this.parentPost.getText().length() >= 94 - this.parentPost.getAccount().getHandle().length()){
+            setText(("EP@ " + this.parentPost.getAccount().getHandle() + ": " + this.parentPost.getText()).substring(0,100));
+        }
+        else{
+            setText(("EP@ " + this.parentPost.getAccount().getHandle() + ": " + this.parentPost.getText()));
+        }
     }
 
     public void setText(String text){

@@ -59,7 +59,7 @@ public class SocialMedia implements SocialMediaPlatform {
 	}
 	
 	public int checkHandle(String handle){
-		if(handle.contains(" ") && !handle.equals("") && handle.length()<31){
+		if(!handle.contains(" ") && !handle.equals("") && handle.length()<31){
 			for(Account account: accounts){
 				if(account.getHandle().equals(handle)){
 					return 1;
@@ -185,10 +185,10 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	public boolean checkPost(String message){
 		if(message.length() < 100 && !(message.equals(null))){
-			return false;
+			return true;
 		}
 		//if message within valid size constraints return true
-		return true;
+		return false;
 	}
 
 	@Override
@@ -268,24 +268,17 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public int getNumberOfAccounts() {
-		// TODO Auto-generated method stub
-		return 0;
+		return accounts.size();
 	}
 
 	@Override
 	public int getTotalOriginalPosts() {
-		int totalPosts = 0;
-		for(int i=0; i < accounts.size(); i++){
-			totalPosts += (accounts.get(i).getPosts().size() - 1);
-			//sum the number of posts each account has 
-		}
-		return totalPosts;
+		return posts.size();
 	}
 
 	@Override
 	public int getTotalEndorsmentPosts() {
-		// TODO Auto-generated method stub
-		return 0;
+		return endorsements.size();
 	}
 
 	@Override
@@ -296,14 +289,29 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public int getMostEndorsedPost() {
-		// TODO Auto-generated method stub
-		return 0;
+		int id = 0;
+		int idlikes = 0;
+		for(Post post : posts){
+			if(post.getLike() >= idlikes){
+				id = post.getPostId();
+				idlikes = post.getLike();
+			}
+		}
+		//CHECK COMMENTS HERE AND RETURN HIGHEST OF ALL
+		return id;
 	}
 
 	@Override
 	public int getMostEndorsedAccount() {
-		// TODO Auto-generated method stub
-		return 0;
+		int id = 0;
+		int idlikes = 0;
+		for(Account account : accounts){
+			if(account.getNumberEndorsements() >= idlikes){
+				id = account.getId();
+				idlikes = account.getNumberEndorsements();
+			}
+		}
+		return id;
 	}
 
 	@Override
