@@ -18,6 +18,17 @@ public class SocialMedia implements SocialMediaPlatform {
 	private ArrayList<Comment> comments = new ArrayList<>();
 	private ArrayList<Endorsement> endorsements = new ArrayList<>();
 
+	//Done functions
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	
 	@Override
 	public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
 		if(checkHandle(handle)==1){
@@ -27,7 +38,6 @@ public class SocialMedia implements SocialMediaPlatform {
 			throw new InvalidHandleException("Handle invalid.");
 		}
 		//check if handle is valid
-
 		if(accounts.isEmpty()) {
 			accounts.add(new Account(0, handle, null));
 		}
@@ -35,7 +45,6 @@ public class SocialMedia implements SocialMediaPlatform {
 			accounts.add(new Account(accounts.size(), handle, null));
 		}
 		//assign account ID
-
 		return accounts.get(accounts.size()-1).getId();
 		//return Account ID
 	}
@@ -58,6 +67,115 @@ public class SocialMedia implements SocialMediaPlatform {
 		return accounts.get(accounts.size()-1).getId();
 	}
 	
+
+	@Override
+	public void changeAccountHandle(String oldHandle, String newHandle) throws HandleNotRecognisedException, IllegalHandleException, InvalidHandleException {
+		if(checkHandle(newHandle)==1) {
+			throw new IllegalHandleException("Handle already in use.");
+		}
+		else if(checkHandle(newHandle)==2) {
+			throw new InvalidHandleException("Handle invalid.");
+		}
+		//check new handle is valid
+		boolean validHandle = false;
+		for(Account account: accounts){
+			if(account.getHandle().equals(oldHandle)){
+				account.setHandle(newHandle);
+				for(Endorsement endorsement: endorsements){
+					if(endorsement.getParentPost().getAccount().getHandle().equals(oldHandle)) {
+						String endorsetext = endorsement.getParentPost().getText();
+						//if the handle of the account of the endorsed post equals the old handle, change the text to the new handle
+						if(endorsetext.length() >= 94 - newHandle.length()){
+							endorsement.setText(("EP@ " + newHandle + ": " + endorsetext).substring(0, 100));
+						}
+						else{
+							endorsement.setText(("EP@ " + newHandle + ": " + endorsetext));
+						}
+						validHandle = true;
+					}
+				}
+			}
+		}
+		if(!validHandle){
+			throw new HandleNotRecognisedException("Handle not in use");
+		}
+	}
+
+	@Override
+	public void updateAccountDescription(String handle, String description) throws HandleNotRecognisedException {
+		boolean validHandle = false;
+		for(int i=0; i < accounts.size(); i++){
+			if((accounts.get(i).getHandle()) == handle){
+				accounts.get(i).setDescription(description);
+				validHandle = true;
+				break;
+			}
+		}
+		if(validHandle == false){
+			throw new HandleNotRecognisedException("No existing account with matching Handle.");
+		}
+	}
+
+	@Override
+	public int createPost(String handle, String message) throws HandleNotRecognisedException, InvalidPostException {
+		//check handle validity and message validity, then make post, incrementing postid
+		boolean validHandle = false;
+		for(int i=0; i < accounts.size(); i++){
+			if(accounts.get(i).getHandle().equals(handle)){
+				boolean validPost = checkPost(message);
+				if(validPost){
+					accounts.get(i).getPosts().add(new Post(message,this.PostID, accounts.get(i)));
+					posts.add(accounts.get(i).getPosts().get(accounts.get(i).getPosts().size()-1));
+					this.PostID +=1;
+					//given valid post and handle make post within users posts and add 1 to post id
+				}
+				else{
+					throw new InvalidPostException("Post is not within valid size constraints.");
+				}
+				validHandle = true;
+				break;
+			}
+		}
+		if(!validHandle){
+			throw new HandleNotRecognisedException("No existing account with matching Handle.");
+		}
+		return this.PostID;
+	}
+
+	@Override
+	public int getNumberOfAccounts() {
+		return accounts.size();
+	}
+
+	@Override
+	public int getTotalOriginalPosts() {
+		return posts.size();
+	}
+
+	@Override
+	public int getTotalEndorsmentPosts() {
+		return endorsements.size();
+	}
+
+	//Functions we created
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+
+	public boolean checkPost(String message){
+		if(message.length() < 100 && !(message.equals(null))){
+			return true;
+		}
+		//if message within valid size constraints return true
+		return false;
+	}
+
 	public int checkHandle(String handle){
 		if(!handle.contains(" ") && !handle.equals("") && handle.length()<31){
 			for(Account account: accounts){
@@ -73,6 +191,17 @@ public class SocialMedia implements SocialMediaPlatform {
 			return 2;
 		//if handle invalid, return 2
 	}
+
+	//Not finished functions
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
 
 	@Override
 	public void removeAccount(int id) throws AccountIDNotRecognisedException {
@@ -106,89 +235,6 @@ public class SocialMedia implements SocialMediaPlatform {
 		if(validHandle == false){
 			throw new HandleNotRecognisedException("No existing account with matching Handle.");
 		}
-	}
-
-	@Override
-	public void changeAccountHandle(String oldHandle, String newHandle) throws HandleNotRecognisedException, IllegalHandleException, InvalidHandleException {
-		if(checkHandle(newHandle)==1) {
-			throw new IllegalHandleException("Handle already in use.");
-		}
-		else if(checkHandle(newHandle)==2) {
-			throw new InvalidHandleException("Handle invalid.");
-		}
-		//check new handle is valid
-
-		boolean validHandle = false;
-		for(Account account: accounts){
-			if(account.getHandle().equals(oldHandle)){
-				account.setHandle(newHandle);
-				for(Endorsement endorsement: endorsements){
-					if(endorsement.getParentPost().getAccount().getHandle().equals(oldHandle)) {
-						//if the handle of the account of the endorsed post equals the old handle, change the text to the new handle
-						endorsement.setText(("EP@ " + newHandle + ": " + endorsement.getParentPost().getText()).substring(0, 100));
-						validHandle = true;
-					}
-				}
-			}
-		}
-		if(!validHandle){
-			throw new HandleNotRecognisedException("Handle not in use");
-		}
-	}
-
-	@Override
-	public void updateAccountDescription(String handle, String description) throws HandleNotRecognisedException {
-		boolean validHandle = false;
-		for(int i=0; i < accounts.size(); i++){
-			if((accounts.get(i).getHandle()) == handle){
-				accounts.get(i).setDescription(description);
-				validHandle = true;
-				break;
-			}
-		}
-		if(validHandle == false){
-			throw new HandleNotRecognisedException("No existing account with matching Handle.");
-		}
-	}
-
-	@Override
-	public String showAccount(String handle) throws HandleNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int createPost(String handle, String message) throws HandleNotRecognisedException, InvalidPostException {
-		//check handle validity and message validity, then make post, incrementing postid
-		boolean validHandle = false;
-		for(int i=0; i < accounts.size(); i++){
-			if(accounts.get(i).getHandle().equals(handle)){
-				boolean validPost = checkPost(message);
-				if(validPost){
-					accounts.get(i).getPosts().add(new Post(message,this.PostID, accounts.get(i)));
-					posts.add(accounts.get(i).getPosts().get(accounts.get(i).getPosts().size()-1));
-					this.PostID +=1;
-					//given valid post and handle make post within users posts and add 1 to post id
-				}
-				else{
-					throw new InvalidPostException("Post is not within valid size constraints.");
-				}
-				validHandle = true;
-				break;
-			}
-		}
-		if(!validHandle){
-			throw new HandleNotRecognisedException("No existing account with matching Handle.");
-		}
-		return this.PostID;
-	}
-
-	public boolean checkPost(String message){
-		if(message.length() < 100 && !(message.equals(null))){
-			return true;
-		}
-		//if message within valid size constraints return true
-		return false;
 	}
 
 	@Override
@@ -238,6 +284,57 @@ public class SocialMedia implements SocialMediaPlatform {
 			throw new HandleNotRecognisedException("No existing account with matching Handle.");
 		}
 		return this.PostID;
+	}	
+
+	@Override
+	public int getMostEndorsedPost() {
+		int id = 0;
+		int idlikes = 0;
+		for(Post post : posts){
+			if(post.getLike() >= idlikes){
+				id = post.getPostId();
+				idlikes = post.getLike();
+			}
+		}
+		//CHECK COMMENTS HERE AND RETURN HIGHEST OF ALL
+		return id;
+	}
+
+	@Override
+	public int getMostEndorsedAccount() {
+		int id = 0;
+		int idlikes = 0;
+		for(Account account : accounts){
+			if(account.getNumberEndorsements() >= idlikes){
+				id = account.getId();
+				idlikes = account.getNumberEndorsements();
+			}
+		}
+		//CHECK COMMENTS HERE AND RETURN HIGHEST OF ALL
+		return id;
+	}
+
+	//Not started functions
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+
+	@Override
+	public int getTotalCommentPosts() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String showAccount(String handle) throws HandleNotRecognisedException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -264,54 +361,6 @@ public class SocialMedia implements SocialMediaPlatform {
 			throws PostIDNotRecognisedException, NotActionablePostException {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public int getNumberOfAccounts() {
-		return accounts.size();
-	}
-
-	@Override
-	public int getTotalOriginalPosts() {
-		return posts.size();
-	}
-
-	@Override
-	public int getTotalEndorsmentPosts() {
-		return endorsements.size();
-	}
-
-	@Override
-	public int getTotalCommentPosts() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getMostEndorsedPost() {
-		int id = 0;
-		int idlikes = 0;
-		for(Post post : posts){
-			if(post.getLike() >= idlikes){
-				id = post.getPostId();
-				idlikes = post.getLike();
-			}
-		}
-		//CHECK COMMENTS HERE AND RETURN HIGHEST OF ALL
-		return id;
-	}
-
-	@Override
-	public int getMostEndorsedAccount() {
-		int id = 0;
-		int idlikes = 0;
-		for(Account account : accounts){
-			if(account.getNumberEndorsements() >= idlikes){
-				id = account.getId();
-				idlikes = account.getNumberEndorsements();
-			}
-		}
-		return id;
 	}
 
 	@Override

@@ -53,19 +53,24 @@ public class SocialMediaPlatformTestApp {
 
 		try {
 			platform.createAccount("the_man");
-			assert (platform.getNumberOfAccounts() == 1) : "number of accounts registered in the system does not match";
+			
 			id = platform.createPost("the_man", "This string is a thing");
+			assert (id == 0) : "Post id not 0 as expected";
+			assert (platform.getNumberOfAccounts() == 1) : "Number of posts registered in the system does not match";
 			if(platform.getTotalOriginalPosts() == 1){
 				System.out.println("Post made");
 			}
-			assert(id == 0) : "Post id not 0 as expected.";
-			assert(platform.getTotalOriginalPosts() == 1);
-
+			
 			id = platform.endorsePost("the_man", 0);
+			assert (platform.getTotalEndorsmentPosts() == 1) : "Number of endorsements registered in the system does not match";
+			assert (id == 1) : "Post id not incremented as expected";
 			if(platform.getTotalEndorsmentPosts() == 1){
 				System.out.println("Endorsement made");
 			}
-			assert(id == 1);
+			
+			//Deleted if statements that tested these asserts
+			assert (platform.getMostEndorsedAccount() == 0) : "Most endorsed account incorrect ";
+			assert (platform.getMostEndorsedPost() == 0) : "Most endorsed post incorrect";
 
 		} catch (HandleNotRecognisedException e) {
 			assert (false) : "bad1";
