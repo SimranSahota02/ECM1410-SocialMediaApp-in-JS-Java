@@ -27,6 +27,9 @@ public class Account {
         for(Post post : posts){
             endorsecount += post.getLike();
         }
+        /*for(Comment comment : comments){
+            endorsecount += comment.getLike();
+        }*/
         //CHECK COMMENTS HERE AND ADD TO ENDORSECOUNT
         return endorsecount;
     }

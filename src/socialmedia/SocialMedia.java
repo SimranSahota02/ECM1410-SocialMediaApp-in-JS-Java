@@ -296,7 +296,12 @@ public class SocialMedia implements SocialMediaPlatform {
 				idlikes = post.getLike();
 			}
 		}
-		//CHECK COMMENTS HERE AND RETURN HIGHEST OF ALL
+		/* for(Comment comment: comments) {
+			if(comment.getlike() >= idlikes){
+				id = comment.getPostId();
+				idlikes = comment.getlike();
+			}
+		}*/
 		return id;
 	}
 
