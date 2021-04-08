@@ -162,6 +162,14 @@ public class SocialMedia implements SocialMediaPlatform {
 		return comments.size();
 	}
 
+	@Override
+	public void erasePlatform() {
+		this.PostID = 0;
+		this.accounts.clear();
+		this.posts.clear();
+		this.comments.clear();
+	}
+
 	//Functions we created
 	//
 	//
@@ -342,12 +350,6 @@ public class SocialMedia implements SocialMediaPlatform {
 	//
 
 	@Override
-	public String showAccount(String handle) throws HandleNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public int commentPost(String handle, int id, String message) throws HandleNotRecognisedException,
 			PostIDNotRecognisedException, NotActionablePostException, InvalidPostException {
 		// TODO Auto-generated method stub
@@ -356,8 +358,19 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	@Override
 	public void deletePost(int id) throws PostIDNotRecognisedException {
-		// TODO Auto-generated method stub
+		//remove endorsements
+		//set comments to "The original content was removed from the system and is no longer available." 
+		//above best done on platform creation with a null account and -1 post id?
+		//need for checks that post id is not -1 for endorsepost and commentpost functions then
+		//then remove post
+		//as posts in socmed class and in account are same object should only need removing from one location
 
+	}
+
+	@Override
+	public String showAccount(String handle) throws HandleNotRecognisedException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -373,11 +386,6 @@ public class SocialMedia implements SocialMediaPlatform {
 		return null;
 	}
 
-	@Override
-	public void erasePlatform() {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void savePlatform(String filename) throws IOException {
