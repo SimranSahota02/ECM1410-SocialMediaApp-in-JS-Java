@@ -261,9 +261,8 @@ public class SocialMedia implements SocialMediaPlatform {
 						break;
 					}
 				}
-				//loop thru all comments, if comment == post id add endorsement
-				//if not valid post - so if post found in posts we dont loop
-				/*for (Comment comment : comments) {
+				if(!validPost){
+					/*for (Comment comment : comments) {
 					if (comment.getPostId() == id) {
 						//for all accounts, if post found in posts add endorsement
 						account.getEndorsements().add(new Endorsement(PostID, comment));
@@ -272,7 +271,7 @@ public class SocialMedia implements SocialMediaPlatform {
 						break;
 					}
 				}*/
-
+				}
 				//if neither post or comment then throw not actioanable post exception
 				if (!validPost) {
 					throw new NotActionablePostException("Post cannot be endorsed as it is an invalid type");
@@ -290,18 +289,24 @@ public class SocialMedia implements SocialMediaPlatform {
 	public int getMostEndorsedPost() {
 		int id = 0;
 		int idlikes = 0;
-		for(Post post : posts){
-			if(post.getLike() >= idlikes){
-				id = post.getPostId();
-				idlikes = post.getLike();
+		if(posts != null){
+			for(Post post : posts){
+				if(post.getLike() >= idlikes){
+					id = post.getPostId();
+					idlikes = post.getLike();
+				}
 			}
 		}
-		/* for(Comment comment: comments) {
-			if(comment.getlike() >= idlikes){
-				id = comment.getPostId();
-				idlikes = comment.getlike();
+		/*
+		if(comments != null){
+			for(Comment comment: comments) {
+				if(comment.getlike() >= idlikes){
+					id = comment.getPostId();
+					idlikes = comment.getlike();
+				}
 			}
-		}*/
+		}
+		*/
 		return id;
 	}
 
@@ -309,13 +314,14 @@ public class SocialMedia implements SocialMediaPlatform {
 	public int getMostEndorsedAccount() {
 		int id = 0;
 		int idlikes = 0;
-		for(Account account : accounts){
-			if(account.getNumberEndorsements() >= idlikes){
-				id = account.getId();
-				idlikes = account.getNumberEndorsements();
+		if(accounts != null){
+			for(Account account : accounts){
+				if(account.getNumberEndorsements() >= idlikes){
+					id = account.getId();
+					idlikes = account.getNumberEndorsements();
+				}
 			}
 		}
-		//CHECK COMMENTS HERE AND RETURN HIGHEST OF ALL
 		return id;
 	}
 

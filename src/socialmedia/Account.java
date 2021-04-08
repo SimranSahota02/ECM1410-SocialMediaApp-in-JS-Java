@@ -24,13 +24,19 @@ public class Account {
 
     public int getNumberEndorsements(){
         int endorsecount = 0;
-        for(Post post : posts){
-            endorsecount += post.getLike();
+        if(posts != null){
+            for(Post post : posts){
+                endorsecount += post.getLike();
+            }
         }
-        /*for(Comment comment : comments){
-            endorsecount += comment.getLike();
-        }*/
-        //CHECK COMMENTS HERE AND ADD TO ENDORSECOUNT
+        
+        /*
+        if(comments != null){
+            for(Comment comment : comments){
+                endorsecount += comment.getLike();
+            }
+        }
+        */
         return endorsecount;
     }
 
