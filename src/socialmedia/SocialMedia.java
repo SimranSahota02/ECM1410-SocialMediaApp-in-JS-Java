@@ -157,6 +157,11 @@ public class SocialMedia implements SocialMediaPlatform {
 		return endorsements.size();
 	}
 
+	@Override
+	public int getTotalCommentPosts() {
+		return comments.size();
+	}
+
 	//Functions we created
 	//
 	//
@@ -335,12 +340,6 @@ public class SocialMedia implements SocialMediaPlatform {
 	//
 	//
 	//
-
-	@Override
-	public int getTotalCommentPosts() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	@Override
 	public String showAccount(String handle) throws HandleNotRecognisedException {
