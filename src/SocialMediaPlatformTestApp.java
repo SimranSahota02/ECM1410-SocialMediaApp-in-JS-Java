@@ -55,7 +55,7 @@ public class SocialMediaPlatformTestApp {
 			platform.createAccount("the_man");
 			
 			id = platform.createPost("the_man", "This string is a thing");
-			assert (id == 0) : "Post id not 0 as expected";
+			assert (id == 1) : "Post id not 1 as expected";
 			assert (platform.getNumberOfAccounts() == 1) : "Number of posts registered in the system does not match";
 			if(platform.getTotalOriginalPosts() == 1){
 				System.out.println("Post made");

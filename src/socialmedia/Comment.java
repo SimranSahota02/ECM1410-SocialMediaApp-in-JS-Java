@@ -7,14 +7,25 @@ public class Comment {
     private int likes;
     private String text;
     private int postId;
+    private Post parentPost;
+    private Comment parentComment;
     private Account account;
     private ArrayList<Endorsement> endorsements = new ArrayList<>();
     private ArrayList<Comment> comments = new ArrayList<>();
 
-    public Comment(String text, int postId, Account account){
+    public Comment(String text, int postId, Account account, Post parentPost){
         this.likes = 0;
         this.postId = postId;
         this.account = account;
+        setParentPost(parentPost);
+        setText(text);
+    }
+
+    public Comment(String text, int postId, Account account, Comment parentComment){
+        this.likes = 0;
+        this.postId = postId;
+        this.account = account;
+        setParentComment(parentComment);
         setText(text);
     }
 
@@ -45,5 +56,20 @@ public class Comment {
     public int getPostId(){
         return postId;
     }
-    
+
+    public void setParentPost(Post parentPost) {
+        this.parentPost = parentPost;
+    }
+
+    public void setParentComment(Comment parentComment) {
+        this.parentComment = parentComment;
+    }
+
+    public ArrayList<Endorsement> getEndorsements() {
+        return endorsements;
+    }
+
+    public ArrayList<Comment> getComments() {
+        return comments;
+    }
 }

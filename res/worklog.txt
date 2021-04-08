@@ -10,3 +10,5 @@
 01/04/2021 | 17:00 |   1hr20  |        |          |  Driver  |
 02/04/2021 | 19:30 |   2hrs   |        |  Driver  | Observer |
 06/04/2021 | 19:00 |   2hrs   |        | Observer |  Driver  |
+08/04/2021 | 15:00 |   30min  |        |          |  Driver  |
+08/04/2021 | 18:00 |  2hrs30  |        |  Driver  | Observer |

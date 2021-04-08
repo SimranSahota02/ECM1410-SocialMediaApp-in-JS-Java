@@ -44,4 +44,12 @@ public class Post implements Posts{
     public int getPostId(){
         return postId;
     }
+
+    public ArrayList<Endorsement> getEndorsements() {
+        return endorsements;
+    }
+
+    public ArrayList<Comment> getComments() {
+        return comments;
+    }
 }

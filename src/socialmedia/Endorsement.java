@@ -5,6 +5,7 @@ public class Endorsement {
     private String text;
     private int postId;
     private Post parentPost;
+    private Comment parentComment;
 
     public Endorsement(int postId, Post parentPost){
         this.postId = postId;
@@ -15,6 +16,18 @@ public class Endorsement {
         }
         else{
             setText(("EP@ " + this.parentPost.getAccount().getHandle() + ": " + this.parentPost.getText()));
+        }
+    }
+
+    public Endorsement(int PostId, Comment parentComment){
+        this.postId = postId;
+        this.parentComment = parentComment;
+
+        if(this.parentComment.getText().length() >= 94 - this.parentComment.getAccount().getHandle().length()){
+            setText(("EP@ " + this.parentComment.getAccount().getHandle() + ": " + this.parentComment.getText()).substring(0,100));
+        }
+        else{
+            setText(("EP@ " + this.parentComment.getAccount().getHandle() + ": " + this.parentComment.getText()));
         }
     }
 
@@ -33,4 +46,9 @@ public class Endorsement {
     public Post getParentPost(){
         return parentPost;
     }
+
+    public Comment getParentComment(){
+        return parentComment;
+    }
+
 }

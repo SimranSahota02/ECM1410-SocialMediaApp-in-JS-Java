@@ -29,14 +29,13 @@ public class Account {
                 endorsecount += post.getLike();
             }
         }
-        
-        /*
+
         if(comments != null){
             for(Comment comment : comments){
                 endorsecount += comment.getLike();
             }
         }
-        */
+
         return endorsecount;
     }
 
