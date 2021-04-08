@@ -168,6 +168,7 @@ public class SocialMedia implements SocialMediaPlatform {
 		this.accounts.clear();
 		this.posts.clear();
 		this.comments.clear();
+		this.endorsements.clear();
 	}
 
 	//Functions we created
