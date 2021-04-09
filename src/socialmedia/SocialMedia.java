@@ -620,7 +620,56 @@ public class SocialMedia implements SocialMediaPlatform {
 		//when null, add last one to stringbuilder in format
 		//recursive is why it returns stringbuilder
 
-		return null;
+		Post startPost = null;
+		Comment startComment = null;
+		ArrayList<Comment> childComments;
+		StringBuilder details = new StringBuilder();
+
+		for(Post post: posts){
+			if(post.getPostId()==id){
+				startPost = post;
+				break;
+			}
+		}
+		if(startPost==null){
+			for(Comment comment: comments){
+				if(comment.getPostId()==id){
+					startComment = comment;
+					break;
+				}
+			}
+			if(startComment==null){
+				for(Endorsement endorsement: endorsements){
+					if(endorsement.getPostId()==id){
+						throw new NotActionablePostException("Endorsements not valid post type for this action");
+					}
+				}
+				throw new PostIDNotRecognisedException("Post not found by ID");
+			}
+		}
+		//verify post/comment exists and set start post/comment
+
+		if(startPost!=null) {
+			childComments = startPost.getComments();
+		}
+		else {
+			childComments = startComment.getComments();
+		}
+		//get list of all next generation children of this post/comment
+
+		for(Comment comment: childComments){
+			if(comment.getComments().isEmpty()){
+				return details.append("this childs information");
+				//add leaf childs info stuff onto details
+			}
+			else{
+				details.append(showPostChildrenDetails(comment.getPostId()));
+				//get next generation of child comments onto the string builder
+			}
+		}
+		//loop thru all children and add them to details recursively
+
+		return details;
 	}
 
 
