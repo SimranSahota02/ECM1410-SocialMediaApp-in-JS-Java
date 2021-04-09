@@ -13,23 +13,17 @@ import java.util.ArrayList;
 public class SocialMedia implements SocialMediaPlatform {
 
 	private int PostID = 0;
+	private int AccountID = 0;
 	private ArrayList<Account> accounts = new ArrayList<>();
 	private ArrayList<Post> posts = new ArrayList<>();
 	private ArrayList<Comment> comments = new ArrayList<>();
 	private ArrayList<Endorsement> endorsements = new ArrayList<>();
 	private final Post deletedPost = new Post("The original content was removed from the system and is no longer available.", -1, null);
 
-	//Done functions
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	
+
+
+	//create and update accounts
+
 	@Override
 	public int createAccount(String handle) throws IllegalHandleException, InvalidHandleException {
 		if(checkHandle(handle)==1){
@@ -39,13 +33,10 @@ public class SocialMedia implements SocialMediaPlatform {
 			throw new InvalidHandleException("Handle invalid.");
 		}
 		//check if handle is valid
-		if(accounts.isEmpty()) {
-			accounts.add(new Account(0, handle, null));
-		}
-		else {
-			accounts.add(new Account(accounts.size(), handle, null));
-		}
-		//assign account ID
+
+		accounts.add(new Account(AccountID, handle, null));
+		AccountID++;
+
 		return accounts.get(accounts.size()-1).getId();
 		//return Account ID
 	}
@@ -59,12 +50,9 @@ public class SocialMedia implements SocialMediaPlatform {
 			throw new InvalidHandleException("Handle invalid.");
 		}
 
-		if(accounts.isEmpty()) {
-			accounts.add(new Account(0, handle, description));
-		}
-		else {
-			accounts.add(new Account(accounts.size(), handle, description));
-		}
+		accounts.add(new Account(AccountID, handle, description));
+		AccountID++;
+
 		return accounts.get(accounts.size()-1).getId();
 	}
 
@@ -77,12 +65,15 @@ public class SocialMedia implements SocialMediaPlatform {
 			throw new InvalidHandleException("Handle invalid.");
 		}
 		//check new handle is valid
+
 		boolean validHandle = false;
 		for(Account account: accounts){
 			if(account.getHandle().equals(oldHandle)){
 				account.setHandle(newHandle);
+				//set new account handle
+
 				for(Endorsement endorsement: endorsements){
-					if(!endorsement.getParentPost().equals(null) && endorsement.getParentPost().getAccount().getHandle().equals(oldHandle)) {
+					if(endorsement.getParentPost()!=null && endorsement.getParentPost().getAccount().getHandle().equals(oldHandle)) {
 						String endorsetext = endorsement.getParentPost().getText();
 						//if the handle of the account of the endorsed post equals the old handle, change the text to the new handle
 						if(endorsetext.length() >= 94 - newHandle.length()){
@@ -92,8 +83,9 @@ public class SocialMedia implements SocialMediaPlatform {
 							endorsement.setText(("EP@ " + newHandle + ": " + endorsetext));
 						}
 						validHandle = true;
+						break;
 					}
-					else if(!endorsement.getParentComment().equals(null) && endorsement.getParentComment().getAccount().getHandle().equals(oldHandle)) {
+					else if(endorsement.getParentComment()!=null && endorsement.getParentComment().getAccount().getHandle().equals(oldHandle)) {
 						String endorsetext = endorsement.getParentComment().getText();
 						//if the handle of the account of the endorsed post equals the old handle, change the text to the new handle
 						if(endorsetext.length() >= 94 - newHandle.length()){
@@ -103,8 +95,11 @@ public class SocialMedia implements SocialMediaPlatform {
 							endorsement.setText(("EP@ " + newHandle + ": " + endorsetext));
 						}
 						validHandle = true;
+						break;
 					}
+					//update text of all endorsements for old account posts
 				}
+				break;
 			}
 		}
 		if(!validHandle){
@@ -127,6 +122,10 @@ public class SocialMedia implements SocialMediaPlatform {
 		}
 	}
 
+
+
+
+	//make posts n such
 	@Override
 	public int createPost(String handle, String message) throws HandleNotRecognisedException, InvalidPostException {
 		//check handle validity and message validity, then make post, incrementing postid
@@ -151,35 +150,6 @@ public class SocialMedia implements SocialMediaPlatform {
 			throw new HandleNotRecognisedException("No existing account with matching Handle.");
 		}
 		return this.PostID;
-	}
-
-	@Override
-	public int getNumberOfAccounts() {
-		return accounts.size();
-	}
-
-	@Override
-	public int getTotalOriginalPosts() {
-		return posts.size();
-	}
-
-	@Override
-	public int getTotalEndorsmentPosts() {
-		return endorsements.size();
-	}
-
-	@Override
-	public int getTotalCommentPosts() {
-		return comments.size();
-	}
-
-	@Override
-	public void erasePlatform() {
-		this.PostID = 0;
-		this.accounts.clear();
-		this.posts.clear();
-		this.comments.clear();
-		this.endorsements.clear();
 	}
 
 	@Override
@@ -233,46 +203,6 @@ public class SocialMedia implements SocialMediaPlatform {
 	}
 
 	@Override
-	public int getMostEndorsedPost() {
-		int id = 0;
-		int idlikes = 0;
-		if(posts != null){
-			for(Post post : posts){
-				if(post.getLike() >= idlikes){
-					id = post.getPostId();
-					idlikes = post.getLike();
-				}
-			}
-		}
-
-		if(comments != null){
-			for(Comment comment: comments) {
-				if(comment.getLike() >= idlikes){
-					id = comment.getPostId();
-					idlikes = comment.getLike();
-				}
-			}
-		}
-
-		return id;
-	}
-
-	@Override
-	public int getMostEndorsedAccount() {
-		int id = 0;
-		int idlikes = 0;
-		if(accounts != null){
-			for(Account account : accounts){
-				if(account.getNumberEndorsements() >= idlikes){
-					id = account.getId();
-					idlikes = account.getNumberEndorsements();
-				}
-			}
-		}
-		return id;
-	}
-
-	@Override
 	public int commentPost(String handle, int id, String message) throws HandleNotRecognisedException, PostIDNotRecognisedException, NotActionablePostException, InvalidPostException {
 		//handle of account commenting, id of post being commented, message of content
 		boolean handleValid = false;
@@ -323,18 +253,89 @@ public class SocialMedia implements SocialMediaPlatform {
 			throw new InvalidPostException("Message greater than 100 characters");
 		}
 
-		if(parentPost==null) {
+		if(parentPost!=null) {
 			thisAccount.getComments().add(new Comment(message, this.PostID, thisAccount, parentPost));
 		}
 		else {
 			thisAccount.getComments().add(new Comment(message, this.PostID, thisAccount, parentComment));
 		}
+		//if parent post is a post/comment add comment
 
 		comments.add(thisAccount.getComments().get(thisAccount.getComments().size()-1));
 		this.PostID +=1;
 
 		return this.PostID-1;
 	}
+
+
+
+
+	//getters for stats of platform
+
+	@Override
+	public int getNumberOfAccounts() {
+		return accounts.size();
+	}
+
+	@Override
+	public int getTotalOriginalPosts() {
+		return posts.size();
+	}
+
+	@Override
+	public int getTotalEndorsmentPosts() {
+		return endorsements.size();
+	}
+
+	@Override
+	public int getTotalCommentPosts() {
+		return comments.size();
+	}
+
+	@Override
+	public int getMostEndorsedPost() {
+		int id = 0;
+		int idlikes = 0;
+		if(posts != null){
+			for(Post post : posts){
+				if(post.getLike() >= idlikes){
+					id = post.getPostId();
+					idlikes = post.getLike();
+				}
+			}
+		}
+
+		if(comments != null){
+			for(Comment comment: comments) {
+				if(comment.getLike() >= idlikes){
+					id = comment.getPostId();
+					idlikes = comment.getLike();
+				}
+			}
+		}
+
+		return id;
+	}
+
+	@Override
+	public int getMostEndorsedAccount() {
+		int id = 0;
+		int idlikes = 0;
+		if(accounts != null){
+			for(Account account : accounts){
+				if(account.getNumberEndorsements() >= idlikes){
+					id = account.getId();
+					idlikes = account.getNumberEndorsements();
+				}
+			}
+		}
+		return id;
+	}
+
+
+
+
+	//delete posts and accounts
 
 	@Override
 	public void deletePost(int id) throws PostIDNotRecognisedException {
@@ -411,7 +412,6 @@ public class SocialMedia implements SocialMediaPlatform {
 		boolean validId = false;
 		for(int i=0; i < accounts.size(); i++){
 			if((accounts.get(i).getId()) == id){
-
 				for(Post post: accounts.get(i).getPosts()){
 					try{
 						deletePost(post.getPostId());
@@ -468,13 +468,21 @@ public class SocialMedia implements SocialMediaPlatform {
 			throw new HandleNotRecognisedException("No existing account with matching Handle.");
 		}
 	}
+	/**
+	 loop thru all the endorsements and delet?
+	 */
+
+
+
+
+	//save and manage platform
 
 	@Override
 	public void savePlatform(String filename) throws IOException {
 		try{
 			FileOutputStream file = new FileOutputStream(filename + ".ser");
 			ObjectOutputStream out = new ObjectOutputStream(file);
-			DataStore dataStore = new DataStore(PostID, accounts, posts, comments, endorsements);
+			DataStore dataStore = new DataStore(PostID, AccountID, accounts, posts, comments, endorsements);
 
 			// Method for serialization of object
 			out.writeObject(dataStore);
@@ -498,6 +506,7 @@ public class SocialMedia implements SocialMediaPlatform {
 			dataStore = (DataStore) in.readObject();
 
 			PostID = dataStore.getPostID();
+			AccountID = dataStore.getAccountID();
 			accounts = dataStore.getAccounts();
 			posts = dataStore.getPosts();
 			comments = dataStore.getComments();
@@ -514,26 +523,106 @@ public class SocialMedia implements SocialMediaPlatform {
 
 	}
 
-	//Functions to finish
+	@Override
+	public void erasePlatform() {
+		this.PostID = 0;
+		this.AccountID=0;
+		this.accounts.clear();
+		this.posts.clear();
+		this.comments.clear();
+		this.endorsements.clear();
+	}
+	/**
+	 does this need to use deletePost() method?
+	 */
+
+
+
+
+	//Show info on stuff
 
 	@Override
 	public String showAccount(String handle) throws HandleNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		//get account
+		//id, handle, desc, post count, endorse count. each on a new line
+		Account shownAccount = null;
+		StringBuilder details = new StringBuilder();
+
+		for(Account account: accounts){
+			if(account.getHandle().equals(handle)){
+				shownAccount = account;
+			}
+		}
+		if(shownAccount==null){
+			throw new HandleNotRecognisedException("Handle not recognised");
+		}
+		//verify account exists and set account
+
+		details.append("ID: ").append(shownAccount.getId()).append("\n");
+		details.append("Handle: ").append(shownAccount.getHandle()).append("\n");
+		details.append("Description: ").append(shownAccount.getDescription()).append("\n");
+		details.append("Post count: ").append(shownAccount.getPosts().size()).append("\n");
+		details.append("Endorse count: ").append(shownAccount.getNumberEndorsements());
+		//add details of account to stringbuilder
+
+		return details.toString();
 	}
 
 	@Override
 	public String showIndividualPost(int id) throws PostIDNotRecognisedException {
-		// TODO Auto-generated method stub
-		return null;
+		//get post
+		//id, account, no. endorsements, message
+		Post shownPost = null;
+		Comment shownComment = null;
+		StringBuilder details = new StringBuilder();
+
+		for(Post post: posts){
+			if(post.getPostId()==id){
+				shownPost = post;
+				break;
+			}
+		}
+		if(shownPost==null){
+			for(Comment comment: comments){
+				if(comment.getPostId()==id){
+					shownComment = comment;
+					break;
+				}
+			}
+			if(shownComment==null){
+				throw new PostIDNotRecognisedException("Post not found by ID");
+			}
+		}
+		//verify post/comment exists and set post/comment
+
+		if(shownPost!=null) {
+			details.append("ID: ").append(shownPost.getPostId()).append("\n");
+			details.append("Account: ").append(shownPost.getAccount().getHandle()).append("\n");
+			details.append("No. endorsements: ").append(shownPost.getEndorsements().size()).append("\n");
+			details.append(shownPost.getText());
+		}
+		else {
+			details.append("ID: ").append(shownComment.getPostId()).append("\n");
+			details.append("Account: ").append(shownComment.getAccount().getHandle()).append("\n");
+			details.append("No. endorsements: ").append(shownComment.getEndorsements().size()).append("\n");
+			details.append(shownComment.getText());
+		}
+		//add details of account to stringbuilder
+
+		return details.toString();
 	}
 
 	@Override
-	public StringBuilder showPostChildrenDetails(int id)
-			throws PostIDNotRecognisedException, NotActionablePostException {
-		// TODO Auto-generated method stub
+	public StringBuilder showPostChildrenDetails(int id) throws PostIDNotRecognisedException, NotActionablePostException {
+		//get post/ comment with such ID
+		//get all immediate comments of this post
+		//call this function recursively to get all children children
+		//when null, add last one to stringbuilder in format
+		//recursive is why it returns stringbuilder
+
 		return null;
 	}
+
 
 
 
@@ -562,5 +651,4 @@ public class SocialMedia implements SocialMediaPlatform {
 			return 2;
 		//if handle invalid, return 2
 	}
-
 }

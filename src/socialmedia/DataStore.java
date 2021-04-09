@@ -5,13 +5,15 @@ import java.util.ArrayList;
 public class DataStore {
 
     private int PostID;
+    private int AccountID;
     private ArrayList<Account> accounts = null;
     private ArrayList<Post> posts = null;
     private ArrayList<Comment> comments = null;
     private ArrayList<Endorsement> endorsements = null;
 
-    public DataStore(int PostID, ArrayList<Account> accounts, ArrayList<Post> posts, ArrayList<Comment> comments, ArrayList<Endorsement> endorsements){
+    public DataStore(int PostID, int AccountID, ArrayList<Account> accounts, ArrayList<Post> posts, ArrayList<Comment> comments, ArrayList<Endorsement> endorsements){
         setPostID(PostID);
+        setAccountID(AccountID);
         setAccounts(accounts);
         setPosts(posts);
         setComments(comments);
@@ -20,6 +22,10 @@ public class DataStore {
 
     public int getPostID() {
         return PostID;
+    }
+
+    public int getAccountID() {
+        return AccountID;
     }
 
     public ArrayList<Account> getAccounts() {
@@ -40,6 +46,10 @@ public class DataStore {
 
     public void setPostID(int postID) {
         this.PostID = postID;
+    }
+
+    public void setAccountID(int accountID) {
+        AccountID = accountID;
     }
 
     public void setAccounts(ArrayList<Account> accounts) {
