@@ -1,6 +1,7 @@
 package socialmedia;
+import java.io.Serializable;
 
-public interface Posts {
+public interface Posts extends Serializable{
     
     public void addLike();
 

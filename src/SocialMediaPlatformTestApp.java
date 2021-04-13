@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 import socialmedia.AccountIDNotRecognisedException;
 import socialmedia.HandleNotRecognisedException;
 import socialmedia.SocialMedia;
@@ -69,9 +71,33 @@ public class SocialMediaPlatformTestApp {
 			}
 			
 			//Deleted if statements that tested these asserts
-			assert (platform.getMostEndorsedAccount() == 0) : "Most endorsed account incorrect ";
-			assert (platform.getMostEndorsedPost() == 0) : "Most endorsed post incorrect";
+			//assert (platform.getMostEndorsedAccount() == 0) : "Most endorsed account incorrect ";
+			//assert (platform.getMostEndorsedPost() == 0) : "Most endorsed post incorrect";
 
+			platform.erasePlatform();
+			platform.createAccount("the_man");
+			platform.createAccount("sim_ran");
+			platform.createPost("the_man", "Matthew Auger");
+			platform.commentPost("sim_ran", 0, "Matthew Ogre");
+			platform.commentPost("the_man", 1, "fuckof");
+			platform.changeAccountHandle("the_man", "siman");
+			System.out.println(platform.showIndividualPost(0));
+			//System.out.println((platform.showPostChildrenDetails(0)).toString());
+			//System.out.println((platform.showAccount("the_man")));
+			platform.updateAccountDescription("siman", "big hootin honkers");
+			platform.endorsePost("sim_ran", 0);
+			//System.out.println((platform.showAccount("the_man")));
+			platform.savePlatform("shitmonkey");
+			platform.erasePlatform();
+			platform.loadPlatform("shitmonkey");
+			System.out.println((platform.showAccount("siman")));
+			
+				
+		} catch (ClassNotFoundException e) {
+			assert (false) : "no good";
+		} catch (IOException e) {
+			System.out.print(e);
+			assert (false) : "verily bad";
 		} catch (HandleNotRecognisedException e) {
 			assert (false) : "bad1";
 		} catch (InvalidPostException e) {

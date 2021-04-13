@@ -71,7 +71,8 @@ public class SocialMedia implements SocialMediaPlatform {
 			if(account.getHandle().equals(oldHandle)){
 				account.setHandle(newHandle);
 				//set new account handle
-
+				
+				validHandle = true;
 				for(Endorsement endorsement: endorsements){
 					if(endorsement.getParentPost()!=null && endorsement.getParentPost().getAccount().getHandle().equals(oldHandle)) {
 						String endorsetext = endorsement.getParentPost().getText();
@@ -82,7 +83,6 @@ public class SocialMedia implements SocialMediaPlatform {
 						else{
 							endorsement.setText(("EP@ " + newHandle + ": " + endorsetext));
 						}
-						validHandle = true;
 						break;
 					}
 					else if(endorsement.getParentComment()!=null && endorsement.getParentComment().getAccount().getHandle().equals(oldHandle)) {
@@ -94,7 +94,6 @@ public class SocialMedia implements SocialMediaPlatform {
 						else{
 							endorsement.setText(("EP@ " + newHandle + ": " + endorsetext));
 						}
-						validHandle = true;
 						break;
 					}
 					//update text of all endorsements for old account posts
@@ -255,9 +254,11 @@ public class SocialMedia implements SocialMediaPlatform {
 
 		if(parentPost!=null) {
 			thisAccount.getComments().add(new Comment(message, this.PostID, thisAccount, parentPost));
+			parentPost.getComments().add(thisAccount.getComments().get(thisAccount.getComments().size()-1));
 		}
 		else {
 			thisAccount.getComments().add(new Comment(message, this.PostID, thisAccount, parentComment));
+			parentComment.getComments().add(thisAccount.getComments().get(thisAccount.getComments().size()-1));
 		}
 		//if parent post is a post/comment add comment
 
@@ -426,6 +427,12 @@ public class SocialMedia implements SocialMediaPlatform {
 				}
 				//remove all comments
 
+				for(Endorsement endorsement: accounts.get(i).getEndorsements()){
+					endorsement.getParentPost().removeLike();
+					endorsements.remove(endorsement);
+				}
+				//remove all endorsements
+
 				accounts.get(i).setHandle("Deleted account");
 				accounts.remove(i);
 				validId = true;
@@ -457,6 +464,12 @@ public class SocialMedia implements SocialMediaPlatform {
 				}
 				//remove all comments
 
+				for(Endorsement endorsement: accounts.get(i).getEndorsements()){
+					endorsement.getParentPost().removeLike();
+					endorsements.remove(endorsement);
+				}
+				//remove all endorsements
+
 				accounts.get(i).setHandle("Deleted account");
 				accounts.remove(i);
 				validHandle = true;
@@ -468,12 +481,6 @@ public class SocialMedia implements SocialMediaPlatform {
 			throw new HandleNotRecognisedException("No existing account with matching Handle.");
 		}
 	}
-	/**
-	 loop thru all the endorsements and delet?
-	 */
-
-
-
 
 	//save and manage platform
 
@@ -498,7 +505,7 @@ public class SocialMedia implements SocialMediaPlatform {
 	public void loadPlatform(String filename) throws IOException, ClassNotFoundException {
 		try {
 			// Reading the object from a file
-			FileInputStream file = new FileInputStream(filename);
+			FileInputStream file = new FileInputStream(filename + ".ser");
 			ObjectInputStream in = new ObjectInputStream(file);
 			DataStore dataStore = null;
 
@@ -526,7 +533,7 @@ public class SocialMedia implements SocialMediaPlatform {
 	@Override
 	public void erasePlatform() {
 		this.PostID = 0;
-		this.AccountID=0;
+		this.AccountID = 0;
 		this.accounts.clear();
 		this.posts.clear();
 		this.comments.clear();
@@ -534,6 +541,9 @@ public class SocialMedia implements SocialMediaPlatform {
 	}
 	/**
 	 does this need to use deletePost() method?
+	 */
+	/**
+	 no
 	 */
 
 
@@ -651,15 +661,17 @@ public class SocialMedia implements SocialMediaPlatform {
 
 		if(startPost!=null) {
 			childComments = startPost.getComments();
+			details.append(showIndividualPost(startPost.getPostId()) + "\n" + "|" + "\n" + "| > ");
 		}
 		else {
 			childComments = startComment.getComments();
+			details.append(showIndividualPost(startComment.getPostId()) + "\n" + "|" + "\n" + "| > ");
 		}
 		//get list of all next generation children of this post/comment
 
 		for(Comment comment: childComments){
-			if(comment.getComments().isEmpty()){
-				return details.append("this childs information");
+			if(childComments.isEmpty()){
+				return details;
 				//add leaf childs info stuff onto details
 			}
 			else{
@@ -671,9 +683,6 @@ public class SocialMedia implements SocialMediaPlatform {
 
 		return details;
 	}
-
-
-
 
 	//Functions we created
 

@@ -1,8 +1,9 @@
 package socialmedia;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DataStore {
+public class DataStore implements Serializable{
 
     private int PostID;
     private int AccountID;

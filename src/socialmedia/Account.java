@@ -1,10 +1,11 @@
 package socialmedia;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  * da class fo da accounts ya get mi
  */
-public class Account {
+public class Account implements Serializable{
     private int id;
     private String handle;
     private String description;

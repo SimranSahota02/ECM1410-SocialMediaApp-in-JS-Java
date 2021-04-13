@@ -1,6 +1,8 @@
 package socialmedia;
 
-public class Endorsement {
+import java.io.Serializable;
+
+public class Endorsement implements Serializable{
 
     private String text;
     private int postId;
