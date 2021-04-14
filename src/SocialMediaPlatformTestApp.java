@@ -28,7 +28,7 @@ public class SocialMediaPlatformTestApp {
 	 * @param args not used
 	 */
 	public static void main(String[] args) {
-		System.out.println("The system compiled and started the execution...");
+		//System.out.println("The system compiled and started the execution...");
 
 		SocialMediaPlatform platform = new SocialMedia();
 
@@ -60,14 +60,14 @@ public class SocialMediaPlatformTestApp {
 			assert (id == 1) : "Post id not 1 as expected";
 			assert (platform.getNumberOfAccounts() == 1) : "Number of posts registered in the system does not match";
 			if(platform.getTotalOriginalPosts() == 1){
-				System.out.println("Post made");
+				;//System.out.println("Post made");
 			}
 			
 			id = platform.endorsePost("the_man", 0);
 			assert (platform.getTotalEndorsmentPosts() == 1) : "Number of endorsements registered in the system does not match";
 			assert (id == 1) : "Post id not incremented as expected";
 			if(platform.getTotalEndorsmentPosts() == 1){
-				System.out.println("Endorsement made");
+				;//System.out.println("Endorsement made");
 			}
 			
 			//Deleted if statements that tested these asserts
@@ -77,28 +77,31 @@ public class SocialMediaPlatformTestApp {
 			platform.erasePlatform();
 			platform.createAccount("the_man");
 			platform.createAccount("sim_ran");
+			platform.createAccount("nish_nish");
+
 			platform.createPost("the_man", "Matthew Auger");
+			platform.commentPost("nish_nish", 0, "Matthew Awsome");
 			platform.commentPost("sim_ran", 0, "Matthew Ogre");
-			platform.commentPost("the_man", 1, "fuckof");
-			platform.changeAccountHandle("the_man", "siman");
-			System.out.println(platform.showIndividualPost(0));
-			//System.out.println((platform.showPostChildrenDetails(0)).toString());
+			platform.commentPost("the_man", 2, "fuckof");
+			System.out.println((platform.showPostChildrenDetails(0)).toString());
+
+			//platform.changeAccountHandle("the_man", "siman");
+			//System.out.println(platform.showIndividualPost(0));
 			//System.out.println((platform.showAccount("the_man")));
-			platform.updateAccountDescription("siman", "big hootin honkers");
-			platform.endorsePost("sim_ran", 0);
-			//System.out.println((platform.showAccount("the_man")));
-			platform.savePlatform("shitmonkey");
-			platform.erasePlatform();
-			platform.loadPlatform("shitmonkey");
-			System.out.println((platform.showAccount("siman")));
+			//platform.updateAccountDescription("siman", "big hootin honkers");
+			//System.out.println((platform.showAccount("the_man")))
+			//platform.savePlatform("shitmonkey");
+			//platform.erasePlatform();
+			//platform.loadPlatform("shitmonkey");
+			//System.out.println((platform.showAccount("siman")));
 			
 				
-		} catch (ClassNotFoundException e) {
+		} /*catch (ClassNotFoundException e) {
 			assert (false) : "no good";
 		} catch (IOException e) {
 			System.out.print(e);
 			assert (false) : "verily bad";
-		} catch (HandleNotRecognisedException e) {
+		} */ catch (HandleNotRecognisedException e) {
 			assert (false) : "bad1";
 		} catch (InvalidPostException e) {
 			assert (false) : "bad2";

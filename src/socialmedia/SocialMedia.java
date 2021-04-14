@@ -19,7 +19,7 @@ public class SocialMedia implements SocialMediaPlatform {
 	private ArrayList<Comment> comments = new ArrayList<>();
 	private ArrayList<Endorsement> endorsements = new ArrayList<>();
 	private final Post deletedPost = new Post("The original content was removed from the system and is no longer available.", -1, null);
-
+	private int indent = 0;
 
 
 	//create and update accounts
@@ -482,6 +482,8 @@ public class SocialMedia implements SocialMediaPlatform {
 		}
 	}
 
+
+
 	//save and manage platform
 
 	@Override
@@ -539,12 +541,6 @@ public class SocialMedia implements SocialMediaPlatform {
 		this.comments.clear();
 		this.endorsements.clear();
 	}
-	/**
-	 does this need to use deletePost() method?
-	 */
-	/**
-	 no
-	 */
 
 
 
@@ -608,13 +604,13 @@ public class SocialMedia implements SocialMediaPlatform {
 		if(shownPost!=null) {
 			details.append("ID: ").append(shownPost.getPostId()).append("\n");
 			details.append("Account: ").append(shownPost.getAccount().getHandle()).append("\n");
-			details.append("No. endorsements: ").append(shownPost.getEndorsements().size()).append("\n");
+			details.append("No. endorsements: ").append(shownPost.getLike()).append("\n");
 			details.append(shownPost.getText());
 		}
 		else {
 			details.append("ID: ").append(shownComment.getPostId()).append("\n");
 			details.append("Account: ").append(shownComment.getAccount().getHandle()).append("\n");
-			details.append("No. endorsements: ").append(shownComment.getEndorsements().size()).append("\n");
+			details.append("No. endorsements: ").append(shownComment.getLike()).append("\n");
 			details.append(shownComment.getText());
 		}
 		//add details of account to stringbuilder
@@ -661,28 +657,50 @@ public class SocialMedia implements SocialMediaPlatform {
 
 		if(startPost!=null) {
 			childComments = startPost.getComments();
-			details.append(showIndividualPost(startPost.getPostId()) + "\n" + "|" + "\n" + "| > ");
+			details.append("ID: ").append(startPost.getPostId()).append("\n");
+			details.append("Account: ").append(startPost.getAccount().getHandle()).append("\n");
+			details.append("No. endorsements: ").append(startPost.getLike()).append(" | ");
+			details.append("No. comments: ").append(startPost.getComments().size()).append("\n");
+			details.append(startPost.getText()).append("\n");
 		}
 		else {
 			childComments = startComment.getComments();
-			details.append(showIndividualPost(startComment.getPostId()) + "\n" + "|" + "\n" + "| > ");
+			if(indent>0){
+				details.append("\t".repeat(Math.max(0, indent-1))).append("| \n");
+				details.append("\t".repeat(Math.max(0, indent-1))).append("| > ");
+			}
+			details.append("ID: ").append(startComment.getPostId()).append("\n");
+			details.append("\t".repeat(indent));
+			details.append("Account: ").append(startComment.getAccount().getHandle()).append("\n");
+			details.append("\t".repeat(indent));
+			details.append("No. endorsements: ").append(startComment.getLike());
+			details.append(" | No. comments: ").append(startComment.getComments().size()).append("\n");
+			details.append("\t".repeat(indent));
+			details.append(startComment.getText()).append("\n");
 		}
 		//get list of all next generation children of this post/comment
 
 		for(Comment comment: childComments){
 			if(childComments.isEmpty()){
+				indent--;
 				return details;
 				//add leaf childs info stuff onto details
 			}
 			else{
+				indent++;
 				details.append(showPostChildrenDetails(comment.getPostId()));
 				//get next generation of child comments onto the string builder
 			}
 		}
 		//loop thru all children and add them to details recursively
 
+		if(indent>0){
+			indent--;
+		}
 		return details;
 	}
+
+
 
 	//Functions we created
 
