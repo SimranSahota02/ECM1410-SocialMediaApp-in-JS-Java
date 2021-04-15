@@ -1,18 +1,32 @@
 package socialmedia;
-
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.io.Serializable;
 
+/**
+ * Datastore class used to record all of the platform objects,
+ * so they can be saved to a file and read back into the platform.
+ */
 public class DataStore implements Serializable{
-
     private int PostID;
     private int AccountID;
+    //Recording of id keeping attributes
     private ArrayList<Account> accounts = null;
     private ArrayList<Post> posts = null;
     private ArrayList<Comment> comments = null;
     private ArrayList<Endorsement> endorsements = null;
+    //Recording of all arraylist structures
 
-    public DataStore(int PostID, int AccountID, ArrayList<Account> accounts, ArrayList<Post> posts, ArrayList<Comment> comments, ArrayList<Endorsement> endorsements){
+    /**
+     * Datastore class constructor. Sets attributes.
+     * @param PostID Post ID counter to record.
+     * @param AccountID Account ID counter to record.
+     * @param accounts Accounts to record.
+     * @param posts Posts to record.
+     * @param comments Comments to record.
+     * @param endorsements Endorsements to record.
+     */
+    public DataStore(int PostID, int AccountID, ArrayList<Account> accounts, 
+    ArrayList<Post> posts, ArrayList<Comment> comments, ArrayList<Endorsement> endorsements){
         setPostID(PostID);
         setAccountID(AccountID);
         setAccounts(accounts);
@@ -21,30 +35,7 @@ public class DataStore implements Serializable{
         setEndorsements(endorsements);
     }
 
-    public int getPostID() {
-        return PostID;
-    }
-
-    public int getAccountID() {
-        return AccountID;
-    }
-
-    public ArrayList<Account> getAccounts() {
-        return accounts;
-    }
-
-    public ArrayList<Post> getPosts() {
-        return posts;
-    }
-
-    public ArrayList<Comment> getComments() {
-        return comments;
-    }
-
-    public ArrayList<Endorsement> getEndorsements() {
-        return endorsements;
-    }
-
+    //Datastore class setters
     public void setPostID(int postID) {
         this.PostID = postID;
     }
@@ -67,5 +58,30 @@ public class DataStore implements Serializable{
 
     public void setEndorsements(ArrayList<Endorsement> endorsements) {
         this.endorsements = endorsements;
+    }
+
+    //Datastore class getters.
+    public int getPostID() {
+        return PostID;
+    }
+
+    public int getAccountID() {
+        return AccountID;
+    }
+
+    public ArrayList<Account> getAccounts() {
+        return accounts;
+    }
+
+    public ArrayList<Post> getPosts() {
+        return posts;
+    }
+
+    public ArrayList<Comment> getComments() {
+        return comments;
+    }
+
+    public ArrayList<Endorsement> getEndorsements() {
+        return endorsements;
     }
 }

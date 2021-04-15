@@ -206,7 +206,6 @@ public class SocialMedia implements SocialMediaPlatform {
 		//handle of account commenting, id of post being commented, message of content
 		boolean handleValid = false;
 		boolean postValid = false;
-		boolean notEndorsement = false;
 		Account thisAccount = null;
 		Post parentPost = null;
 		Comment parentComment = null;
