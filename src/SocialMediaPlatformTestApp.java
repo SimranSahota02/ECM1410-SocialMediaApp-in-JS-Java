@@ -17,8 +17,8 @@ import socialmedia.SocialMediaPlatform;
  * BadSocialMedia class).
  *
  * 
- * @author Diogo Pacheco
- * @version 1.0
+ * @author Diogo Pacheco, Simran Sahota, Matthew Auger
+ * @version 2.3
  */
 public class SocialMediaPlatformTestApp {
 
@@ -54,61 +54,35 @@ public class SocialMediaPlatformTestApp {
 		}
 
 		try {
-			platform.createAccount("the_man");
+			platform.createAccount("user_simran");
 			
-			id = platform.createPost("the_man", "This string is a thing");
+			id = platform.createPost("user_simran", "This string is a thing");
 			assert (id == 1) : "Post id not 1 as expected";
 			assert (platform.getNumberOfAccounts() == 1) : "Number of posts registered in the system does not match";
-			if(platform.getTotalOriginalPosts() == 1){
-				;//System.out.println("Post made");
-			}
 			
-			id = platform.endorsePost("the_man", 0);
+			id = platform.endorsePost("user_simran", 0);
 			assert (platform.getTotalEndorsmentPosts() == 1) : "Number of endorsements registered in the system does not match";
 			assert (id == 1) : "Post id not incremented as expected";
-			if(platform.getTotalEndorsmentPosts() == 1){
-				;//System.out.println("Endorsement made");
-			}
-			
-			//Deleted if statements that tested these asserts
-			//assert (platform.getMostEndorsedAccount() == 0) : "Most endorsed account incorrect ";
-			//assert (platform.getMostEndorsedPost() == 0) : "Most endorsed post incorrect";
-
+		
 			platform.erasePlatform();
-			platform.createAccount("the_man");
-			platform.createAccount("sim_ran");
-			platform.createAccount("nish_nish");
+			platform.createAccount("user_simran");
+			platform.createAccount("user_matt");
+			platform.createAccount("user_monkey");
 
-			platform.createPost("the_man", "Matthew Auger");
-			platform.commentPost("nish_nish", 0, "Matthew Awsome");
-			platform.commentPost("sim_ran", 0, "Matthew Ogre");
-			platform.commentPost("the_man", 2, "fuckof");
+			platform.createPost("user_simran", "Matthew Auger post");
+			platform.commentPost("user_monkey", 0, "Matthew Awesome post");
+			platform.commentPost("user_matt", 0, "Matthew Ogre post");
+			platform.commentPost("user_simran", 2, "Please stop");
 			System.out.println((platform.showPostChildrenDetails(0)).toString());
-
-			//platform.changeAccountHandle("the_man", "siman");
-			//System.out.println(platform.showIndividualPost(0));
-			//System.out.println((platform.showAccount("the_man")));
-			//platform.updateAccountDescription("siman", "big hootin honkers");
-			//System.out.println((platform.showAccount("the_man")))
-			//platform.savePlatform("shitmonkey");
-			//platform.erasePlatform();
-			//platform.loadPlatform("shitmonkey");
-			//System.out.println((platform.showAccount("siman")));
-			
-				
-		} /*catch (ClassNotFoundException e) {
-			assert (false) : "no good";
-		} catch (IOException e) {
-			System.out.print(e);
-			assert (false) : "verily bad";
-		} */ catch (HandleNotRecognisedException e) {
-			assert (false) : "bad1";
+	
+		} catch (HandleNotRecognisedException e) {
+			assert (false) : "Handle not recognised";
 		} catch (InvalidPostException e) {
-			assert (false) : "bad2";
+			assert (false) : "Post was not valid";
 		} catch (PostIDNotRecognisedException e) {
-			assert (false) : "bad3";
+			assert (false) : "Post id incorrect";
 		} catch (NotActionablePostException e) {
-			assert (false) : "bad4";
+			assert (false) : "Bad post";
 		} catch (IllegalHandleException e) {
 			assert (false) : "IllegalHandleException thrown incorrectly";
 		} catch (InvalidHandleException e) {

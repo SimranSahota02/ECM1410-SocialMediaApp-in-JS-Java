@@ -1,4 +1,5 @@
 package socialmedia;
+
 import java.io.Serializable;
 
 /**

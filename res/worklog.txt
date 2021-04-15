@@ -15,3 +15,6 @@
 09/04/2021 | 11:00 |   1hr30  |        |  Driver  |          |
 09/04/2021 | 16:40 |   20min  |        |  Driver  |          |
 13/04/2021 | 19:00 |   2hrs   |        | Observer |  Driver  |
+14/04/2021 | 16:00 |   1hr    |        |  Driver  |          |
+15/04/2021 | 16:00 |   2hrs   |        |          |Commenting|
+15/04/2021 | 18:00 |   1hr    |        |     Final checks    |
