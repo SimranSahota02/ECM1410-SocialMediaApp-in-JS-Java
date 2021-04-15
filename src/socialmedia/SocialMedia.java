@@ -25,6 +25,22 @@ public class SocialMedia implements SocialMediaPlatform {
 	private int indent = 0;
 	//Indent attribute used for recursive printing function indentation
 
+	/**
+	 * Social media class constructor. Used to create empty
+	 * platform.
+	 * Sets variables to 0 or null where applicable.
+	 */
+	public SocialMedia() {
+		this.PostID = 0;
+		this.AccountID = 0;
+		this.indent = 0;
+		this.accounts = null;
+		this.comments = null;
+		this.posts = null;
+		this.endorsements = null;
+		//Set all attributes to 0
+	}
+
 	//Platform statistic getters *********************************************
 	@Override
 	public int getNumberOfAccounts() {
