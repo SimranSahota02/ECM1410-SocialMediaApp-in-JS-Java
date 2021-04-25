@@ -34,11 +34,7 @@ public class SocialMedia implements SocialMediaPlatform {
 		this.PostID = 0;
 		this.AccountID = 0;
 		this.indent = 0;
-		this.accounts = null;
-		this.comments = null;
-		this.posts = null;
-		this.endorsements = null;
-		//Set all attributes to 0
+		//Set attributes to 0
 	}
 
 	//Platform statistic getters *********************************************
